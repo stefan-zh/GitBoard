@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { expand, map, mergeMap } from 'rxjs/operators';
 import { Repo } from './models/repo';
+import { Contributor } from './models/contributor';
 
 const httpOptions: {headers: HttpHeaders, observe: 'response'} = {
     observe: 'response',
@@ -19,11 +20,11 @@ export class GithubService {
     constructor(private http: HttpClient) { }
 
     // returns an observable with the contents and next link
-    private getPage(url: string): Observable<{
-        content: Repo[],
+    private getPage<T>(url: string): Observable<{
+        content: T[],
         next: string | null
     }> {
-        return this.http.get<Repo[]>(url, httpOptions).pipe(
+        return this.http.get<T[]>(url, httpOptions).pipe(
             map(resp => ({
                 content: resp.body,
                 next: this.nextLink(resp.headers)
@@ -56,7 +57,26 @@ export class GithubService {
             return empty();
         }
         const url = `https://api.github.com/orgs/${orgName}/repos?per_page=100`;
-        return this.getPage(url).pipe(
+        return this.getPage<Repo>(url).pipe(
+            expand(({next}) => next ? this.getPage(next) : empty()),
+            mergeMap(({content}) => content)
+        );
+    }
+
+    /**
+     * Return a stream of contributors
+     *
+     * @param {string} orgName - the name of the organization
+     * @param {string} repoName - the name of the repository
+     * @returns {Observable<Contributor>} - the contributors on that repository
+     */
+    getRepoContributors(orgName: string, repoName: string): Observable<Contributor> {
+        if (!orgName.trim() || !repoName.trim()) {
+            // if not search term, return empty array.
+            return empty();
+        }
+        const url = `https://api.github.com/repos/${orgName}/${repoName}/contributors?per_page=100`;
+        return this.getPage<Contributor>(url).pipe(
             expand(({next}) => next ? this.getPage(next) : empty()),
             mergeMap(({content}) => content)
         );
