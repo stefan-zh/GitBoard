@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
-import { concatMap, expand, map } from 'rxjs/operators';
-import { Repo } from './repo';
+import { expand, map, mergeMap } from 'rxjs/operators';
+import { Repo } from './models/repo';
 
 const httpOptions: {headers: HttpHeaders, observe: 'response'} = {
     observe: 'response',
@@ -58,7 +58,7 @@ export class GithubService {
         const url = `https://api.github.com/orgs/${orgName}/repos?per_page=100`;
         return this.getPage(url).pipe(
             expand(({next}) => next ? this.getPage(next) : empty()),
-            concatMap(({content}) => content)
+            mergeMap(({content}) => content)
         );
     }
 
