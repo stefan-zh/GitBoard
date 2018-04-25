@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubService } from '../github.service';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Contributor } from '../models/contributor';
 import { Repo } from '../models/repo';
 
@@ -22,12 +22,10 @@ export class OrgsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.route.params.subscribe(
-            params => {
-                this.loaded = false;
-                this.getRepos(params['orgName'])
-            }
-        );
+        this.route.params.subscribe(params => {
+            this.loaded = false;
+            this.getRepos(params['orgName'])
+        });
     }
 
     /**
@@ -54,7 +52,7 @@ export class OrgsComponent implements OnInit {
     getRepos(orgName: string): void {
         const repoBuild: Repo[] = [];
         this.githubService.getRepos(orgName).pipe(
-            tap(repo => this.getRepoContributors(orgName, repo))
+            map(repo => this.getRepoContributors(orgName, repo))
         ).subscribe(
             repo => repoBuild.push(repo),
             error => {
@@ -72,15 +70,16 @@ export class OrgsComponent implements OnInit {
     }
 
     // fetches contributors data for the repo
-    private getRepoContributors(orgName: string, repo: Repo): void {
+    private getRepoContributors(orgName: string, repo: Repo): Repo {
         const contributors: Contributor[] = [];
         repo.contributors = contributors;
-        // this.githubService.getRepoContributors(orgName, repo.name)
-        //     .subscribe(
-        //         contributor => contributors.push(contributor),
-        //         error => console.log(error),
-        //         () => repo.contributors = contributors
-        //     );
+        this.githubService.getRepoContributors(orgName, repo.name)
+            .subscribe(
+                contributor => contributors.push(contributor),
+                error => console.log(error),
+                () => repo.contributors = contributors
+            );
+        return repo;
     }
 
 }
