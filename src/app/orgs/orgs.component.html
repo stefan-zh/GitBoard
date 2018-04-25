@@ -5,32 +5,46 @@
     </div>
     <div *ngIf="!notFound">
         <nav>
-            <a routerLink="/repos">Repos</a>
-            <a routerLink="/contributors">Contributors</a>
+            <button (click)="category('repos')">Repos</button>
+            <button (click)="category('contributors')">Contributors</button>
         </nav>
-        <div>
-            <span>Most popular by:</span>
-            <button (click)="sortBy('stargazers_count')">Stars</button>
-            <button (click)="sortBy('forks_count')">Forks</button>
-            <button (click)="sortBy('contributors')">Contributors</button>
+        <div [ngSwitch]="cat">
+            <div *ngSwitchCase="'repos'">
+                <div>
+                    <span>Most popular repos by:</span>
+                    <button (click)="sortBy('stargazers_count')">Stars</button>
+                    <button (click)="sortBy('forks_count')">Forks</button>
+                    <button (click)="sortBy('contributors')">Contributors</button>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Stars</th>
+                        <th>Forks</th>
+                        <th>Contributors</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let repo of repos">
+                        <td><a href="{{repo.html_url}}" target="_blank">{{repo.name}}</a></td>
+                        <td>{{repo.stargazers_count}}</td>
+                        <td>{{repo.forks_count}}</td>
+                        <td>{{repo.contributors.length}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngSwitchCase="'contributors'">
+                <div>
+                    <span>Top Contributors:</span>
+                    <button>Internal</button>
+                    <button>External</button>
+                </div>
+            </div>
+            <div *ngSwitchDefault>
+                <span>Invalid category was selected</span>
+            </div>
         </div>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Stars</th>
-                <th>Forks</th>
-                <th>Contributors</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let repo of repos">
-                <td><a href="{{repo.html_url}}" target="_blank">{{repo.name}}</a></td>
-                <td>{{repo.stargazers_count}}</td>
-                <td>{{repo.forks_count}}</td>
-                <td>{{repo.contributors.length}}</td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
