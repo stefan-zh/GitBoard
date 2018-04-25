@@ -7,12 +7,13 @@ import { Repo } from '../models/repo';
 
 @Component({
     selector: 'app-repos',
-    templateUrl: './repos.component.html',
-    styleUrls: ['./repos.component.css']
+    templateUrl: './orgs.component.html',
+    styleUrls: ['./orgs.component.css']
 })
-export class ReposComponent implements OnInit {
+export class OrgsComponent implements OnInit {
 
     loaded = false;
+    notFound = false;
     repos: Repo[] = [];
 
     constructor(
@@ -21,8 +22,12 @@ export class ReposComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        const orgName = this.route.snapshot.paramMap.get('orgName');
-        this.getRepos(orgName);
+        this.route.params.subscribe(
+            params => {
+                this.loaded = false;
+                this.getRepos(params['orgName'])
+            }
+        );
     }
 
     /**
@@ -52,10 +57,16 @@ export class ReposComponent implements OnInit {
             tap(repo => this.getRepoContributors(orgName, repo))
         ).subscribe(
             repo => repoBuild.push(repo),
-            error => console.log(error),
-            () => {
-                this.repos = repoBuild;
+            error => {
                 this.loaded = true;
+                this.notFound = true;
+                this.repos = [];
+                console.log(error);
+            },
+            () => {
+                this.loaded = true;
+                this.notFound = false;
+                this.repos = repoBuild;
             }
         );
     }
@@ -63,12 +74,13 @@ export class ReposComponent implements OnInit {
     // fetches contributors data for the repo
     private getRepoContributors(orgName: string, repo: Repo): void {
         const contributors: Contributor[] = [];
-        this.githubService.getRepoContributors(orgName, repo.name)
-            .subscribe(
-                contributor => contributors.push(contributor),
-                error => console.log(error),
-                () => repo.contributors = contributors
-            );
+        repo.contributors = contributors;
+        // this.githubService.getRepoContributors(orgName, repo.name)
+        //     .subscribe(
+        //         contributor => contributors.push(contributor),
+        //         error => console.log(error),
+        //         () => repo.contributors = contributors
+        //     );
     }
 
 }

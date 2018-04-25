@@ -15,7 +15,7 @@ import { MessageService } from './message.service';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
-import { ReposComponent } from './repos/repos.component';
+import { OrgsComponent } from './orgs/orgs.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +25,7 @@ import { ReposComponent } from './repos/repos.component';
         MessagesComponent,
         DashboardComponent,
         HeroSearchComponent,
-        ReposComponent
+        OrgsComponent
     ],
     imports: [
         AppRoutingModule,
