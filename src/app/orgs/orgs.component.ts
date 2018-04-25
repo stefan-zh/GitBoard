@@ -15,6 +15,7 @@ export class OrgsComponent implements OnInit {
     loaded = false;
     notFound = false;
     repos: Repo[] = [];
+    cat: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -22,6 +23,7 @@ export class OrgsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.cat = 'repos';
         this.route.params.subscribe(params => {
             this.loaded = false;
             this.getRepos(params['orgName'])
@@ -42,6 +44,15 @@ export class OrgsComponent implements OnInit {
             }
             return right - left;
         });
+    }
+
+    /**
+     * Applies the selected category (repos|contributors)
+     *
+     * @param {string} cat - the selected category
+     */
+    category(cat: string): void {
+        this.cat = cat;
     }
 
     /**
