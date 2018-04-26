@@ -6,25 +6,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GithubService } from './github.service';
-import { HeroesComponent } from './heroes/heroes.component';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
-import { HeroService } from "./hero.service";
 // import { InMemoryDataService }  from './in-memory-data.service';
-import { MessagesComponent } from './messages/messages.component';
-import { MessageService } from './message.service';
 import { AppRoutingModule } from './app-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { OrgsComponent } from './orgs/orgs.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        HeroesComponent,
-        HeroDetailComponent,
-        MessagesComponent,
-        DashboardComponent,
-        HeroSearchComponent,
         OrgsComponent
     ],
     imports: [
@@ -41,9 +29,7 @@ import { OrgsComponent } from './orgs/orgs.component';
         // )
     ],
     providers: [
-        GithubService,
-        HeroService,
-        MessageService
+        GithubService
     ],
     bootstrap: [AppComponent]
 })
