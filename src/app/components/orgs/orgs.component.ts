@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { GithubService } from '../github.service';
+import { GithubService } from '../../services/github.service';
 import { last, mergeMap, tap} from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { Contributor } from '../models/contributor';
-import { Repo } from '../models/repo';
+import { Contributor } from '../../models/contributor';
+import { Repo } from '../../models/repo';
 
 @Component({
     selector: 'app-repos',

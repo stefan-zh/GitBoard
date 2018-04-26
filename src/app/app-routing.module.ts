@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OrgsComponent } from './orgs/orgs.component';
+import { OrgsComponent } from './components/orgs/orgs.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/org/octokit', pathMatch: 'full' },

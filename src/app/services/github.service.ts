@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { expand, map, mergeMap } from 'rxjs/operators';
-import { Repo } from './models/repo';
-import { Contributor } from './models/contributor';
+import { Repo } from '../models/repo';
+import { Contributor } from '../models/contributor';
 
 const httpOptions: {headers: HttpHeaders, observe: 'response'} = {
     observe: 'response',
