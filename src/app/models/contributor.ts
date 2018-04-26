@@ -1,5 +1,6 @@
-import { Member } from "./member";
-
-export class Contributor extends Member {
+export class Contributor {
+    id: number;
+    login: string;
+    html_url: string;
     contributions: number;
 }
