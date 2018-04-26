@@ -6,7 +6,8 @@
     <div *ngIf="!notFound">
         <nav>
             <button (click)="category('repos')">Repos</button>
-            <button (click)="category('contributors')">Contributors</button>
+            <button (click)="category('internal-contributors')">Internal Contributors</button>
+            <button (click)="category('external-contributors')">External Contributors</button>
         </nav>
         <div [ngSwitch]="cat">
             <div *ngSwitchCase="'repos'">
@@ -35,12 +36,39 @@
                     </tbody>
                 </table>
             </div>
-            <div *ngSwitchCase="'contributors'">
-                <div>
-                    <span>Top Contributors:</span>
-                    <button>Internal</button>
-                    <button>External</button>
-                </div>
+            <div *ngSwitchCase="'internal-contributors'">
+                <span>Top Internal Contributors:</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Login</th>
+                        <th>Contributions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let contributor of sortedIntContrib">
+                        <td><a href="{{contributor.html_url}}" target="_blank">{{contributor.login}}</a></td>
+                        <td>{{contributor.contributions}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngSwitchCase="'external-contributors'">
+                <span>Top External Contributors:</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Login</th>
+                        <th>Contributions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let contributor of sortedExtContrib">
+                        <td><a href="{{contributor.html_url}}" target="_blank">{{contributor.login}}</a></td>
+                        <td>{{contributor.contributions}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div *ngSwitchDefault>
                 <span>Invalid category was selected</span>
