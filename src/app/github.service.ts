@@ -82,4 +82,22 @@ export class GithubService {
         );
     }
 
+    /**
+     * Gets the stream of public members of the organization.
+     *
+     * @param {string} orgName - the name of the organization
+     * @returns {Observable<Contributor>} - the stream of public members
+     */
+    getOrgPublicMembers(orgName: string): Observable<Contributor> {
+        if (!orgName.trim()) {
+            // if not search term, return empty array.
+            return empty();
+        }
+        const url = `https://api.github.com/orgs/${orgName}/public_members?per_page=100`;
+        return this.getPage<Contributor>(url).pipe(
+            expand(({next}) => next ? this.getPage(next) : empty()),
+            mergeMap(({content}) => content)
+        );
+    }
+
 }
