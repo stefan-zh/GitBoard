@@ -5,10 +5,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GithubService } from './github.service';
+import { GithubService } from './services/github.service';
 // import { InMemoryDataService }  from './in-memory-data.service';
 import { AppRoutingModule } from './app-routing.module';
-import { OrgsComponent } from './orgs/orgs.component';
+import { OrgsComponent } from './components/orgs/orgs.component';
 
 @NgModule({
     declarations: [
