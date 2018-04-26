@@ -10,7 +10,7 @@ const httpOptions: {headers: HttpHeaders, observe: 'response'} = {
     observe: 'response',
     headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'token 99133ba6c79c5d94db6f7e0392c482839e44cbbc'
+        'Authorization': 'token %PERSONAL_ACCESS_TOKEN%'
     })
 };
 
